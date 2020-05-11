@@ -29,7 +29,7 @@ class OrderSummary extends Component{
             <p><strong>Total Price:{this.props.price} Rupees</strong></p>
             <p>Continue to checkout?</p>
             <Button btnType="Danger" clicked={this.props.cancel}>CANCEL</Button>
-            <Button btnType="Success" clicked={this.props.continue}>ORDER</Button>
+            <Button btnType="Success" clicked={this.props.continue}>CONTINUE</Button>
         </Aux>
         )
     }
