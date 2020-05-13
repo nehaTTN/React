@@ -1,0 +1,10 @@
+CONFIGURATIONS:-
+run npm install --save redux react-redux
+make a store folder.
+wrap the index.js in a <Provider>
+
+how it works:
+1.After dispathing the action from the burgerBuilderComponent it will first go to the action creator
+2.Then follwed by that it will go to the reducer
+3.Reducer will then update the value
+4.we will get the updated value back in the component by the help of subscriber i.e. mapStateToProps

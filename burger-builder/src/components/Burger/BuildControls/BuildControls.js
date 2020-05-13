@@ -8,8 +8,11 @@ const controls=[
     {label:'Bacon',type:'bacon'},
     {label:'Salad',type:'salad'}
 ];
-const buildControls=(props)=>(
-    <div className={styles.BuildControls}>
+const buildControls=(props)=>{
+    console.log('purchasable',props.purchasable);
+    return(
+        <div className={styles.BuildControls}>
+        
         <p><strong>Current Price:{props.price}</strong></p>
         {controls.map(ctrl=>(
     <BuildControl 
@@ -19,10 +22,13 @@ const buildControls=(props)=>(
     removed={()=>props.ingredientRemoved(ctrl.type)}
     disabled2={props.disabled1[ctrl.type]}/>
         ))}
+        
         <button className={styles.OrderButton} 
         disabled={!props.purchasable}
         onClick={props.ordered}>ORDER NOW</button>
     </div>
+    );
+    
 
-);
+        };
 export default buildControls;

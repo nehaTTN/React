@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import Order from '../../components/Order/Order';
 import withErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
-import axios from 'axios';
+import axios from '../../axios-orders';
 class Orders extends Component{
     state={
         orders:[],
@@ -21,7 +21,7 @@ class Orders extends Component{
                  id:key//Assigning it a key so that it can a unquie id
              });
             }
-            console.log(response.data);
+
              this.setState({loading:false,orders:fetchedData});
         })
         .catch(error=>{
@@ -37,7 +37,7 @@ class Orders extends Component{
             <Order
             key={order.id}
             ingredients={order.ingredients}
-            price={order.totalPrice} />
+            prices={order.price} />
             
             ))}
             </div>
