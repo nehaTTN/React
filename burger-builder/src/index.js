@@ -4,11 +4,20 @@ import './index.module.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import burgerBuilderReducer from './store/reducers/burgerBuilder';
 
+// We have to wrap the provider outside of brwserRouter and
+// passing store through it will connect the store to our application.
+const store=createStore(burgerBuilderReducer , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); 
+// We will use the basic dev tools extension because  we are not using any middleware here
 const app=(
+  <Provider store={store}>/
   <BrowserRouter>
   <App />
   </BrowserRouter>
+  </Provider>
 );
 
 ReactDOM.render(

@@ -10,8 +10,9 @@ const order=(props)=>{
         amount:props.ingredients[ingredientsName]});
     }
     const ingredientsOutput=ingredients.map(ig=>{
-    return<span>{ig.name}{ig.amount}</span>
+    return<span key={ig.name}>{ig.name}({ig.amount})</span>
     });
+    console.log('total price',props.prices)
     return(
    <div className={styles.Order}>
     <p style={{
@@ -21,7 +22,7 @@ const order=(props)=>{
         border:'1px solid #ccc',
         padding:'5px'
     }}>Ingredients:{ingredientsOutput}</p>
-    <p><strong>Rs:{props.totalPrice}</strong></p>
+    <p><strong>Rs:{props.prices}</strong></p>
     </div>
     );
     }
