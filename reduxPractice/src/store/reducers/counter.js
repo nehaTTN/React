@@ -1,39 +1,31 @@
-import * as  actionTypes from '../actions'; 
-const initialState={
-    counter:0
+import * as  actionTypes from '../actions/actionsTypes';
+import { updatedObject } from '../utility';
+const initialState = {
+    counter: 0
+}
+//Here we will not use this.state because we are alreay passing state in this
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+        case actionTypes.DECREMENT:
+            // return{
+            //     ...state,//can be used this way also
+            //     counter:state.counter-1
+            // }
+            return updatedObject(state, { counter: state.counter - 1 })
+        case actionTypes.INCREMENT:
+            return updatedObject(state, { counter: state.counter + 1 })
+        case actionTypes.ADD:
+            return updatedObject(state, { counter: state.counter + action.value })
+        case actionTypes.SUBTRACT:
+            return updatedObject(state, { counter: state.counter + action.value })
+        default:
+            return state;
     }
-    //Here we will not use this.state because we are alreay passing state in this
-    const reducer=(state=initialState,action)=>{
-        switch(action.type)
-        {
-            case actionTypes.INCREMENT:
-            return{
-                ...state,
-                counter:state.counter+1
-            }
-            case actionTypes.DECREMENT:
-            return{
-                ...state,
-                counter:state.counter-1
-            }
-            case actionTypes.ADD:
-            return{
-                ...state,
-                counter:state.counter+action.value
-            };
-            case actionTypes.SUBTRACT:
-            return{
-                ...state,
-                counter:state.counter-action.value
-            };
-            default:
-                return state;
-        }
-       
-      
-    
-    }
-    export default reducer;
+
+
+
+}
+export default reducer;
 
 //Read the article after it
 //Unfortunately, the process of correctly applying immutable updates to deeply nested state can
@@ -67,7 +59,7 @@ const initialState={
 //             // This isn't the item we care about - keep it as-is
 //             return item;
 //         }
- 
+
 //         // Otherwise, this is the one we want - return an updated value
 //         return {
 //             ...item,

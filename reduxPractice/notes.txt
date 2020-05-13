@@ -1,0 +1,22 @@
+How to use the downloaded files
+
+1) Run "npm install" in the extracted folder
+2) Run "npm start" to view the project
+
+Compare my code to yours to solve issues you might encounter. You may also copy the content of src/ into your own project's src/ folder to use your project setup (which might've been created with a different create-react-app version) and still use my code.
+
+We will use thunk here as a third party middleware which we will export.
+It will help us in asynchronous code 
+It allows our actioncreater to not return an action.
+Rather return a function which will eventually dispatch an action.
+
+actioncreater can run async code.
+reducer on the other hand runs only pure synchronous code.(it is used basically for state manangement)
+So this is the reason middleware is used between dispatcher and reducer.
+
+Store folder in our project contains the redux part.
+action are pure function qki usme koi logic nhi hota and neither we manipulate .We just pass values.
+Behind the scene redux always create a new copy of the object.
+
+for deep cloning of ibjects we can refer to the redux official page
+recepies->immutable objects

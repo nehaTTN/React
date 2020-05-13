@@ -1,37 +1,43 @@
-import * as  actionTypes from '../actions'; 
-const initialState={
-    results:[]
-    }
-    //Here we will not use this.state because we are alreay passing state in this
-    const reducer=(state=initialState,action)=>{
+import * as  actionTypes from '../actions/actionsTypes';
+import { updatedObject } from '../utility';
+const initialState = {
+    results: []
+}
+// const id=2;
+// newArray=[...state.result]
+// newArray.splice(id,1);
+//We can do either way but if we are creating a copy  it should be a deep copy 
+//for objects of objects.Here we are deleting it so it wont create  a much diifference 
+//But for adding it will definetely create a diff.
+//We have creating here another function so that our switch case is leaner,not necessary though
+//But a good coding practice
+const deleteResult = (state, action) => {
+    const updatedArray = state.results.filter(result => result.id !== action.resultId)
+    return updatedObject(state, { results: updatedArray })
+}
+//Here we will not use this.state because we are alreay passing state in this
+const reducer = (state = initialState, action) => {
 
-        switch(action.type)
-        {
-            case actionTypes.STORE_RESULT:
-            return{
-                ...state,                                                   //New date is assigned o give it a key
-                results:state.results.concat({id:new Date(),value:action.value})//We will not use push here becuase that will push
-            };                                                                   //into the original array ,concat will  return a new arry 
-            case actionTypes.DELETE_RESULT:
-            // const id=2;
-            // newArray=[...state.result]
-            // newArray.splice(id,1);
-            //We can do either way but if we are creating a copy  it should be a deep copy 
-            //for objects of objects.Here we are deleting it so it wont create  a much diifference 
-            //But for adding it will definetely create a diff.
-            const updatedArray=state.results.filter(result=>result.id!==action.resultId)
-            return{
-                ...state,
-                results:updatedArray
-            };
-            default:
-                return state;
-        }
-       
-      
-    
+    switch (action.type) {
+        //New date is assigned o give it a key
+        //We will not use push here becuase that will push
+        //into the original array ,concat will  return a new arry 
+        case actionTypes.STORE_RESULT:
+            return updatedObject(state, {
+                results: state.results.concat({ id: new Date(), value: action.value })
+            })
+
+        case actionTypes.DELETE_RESULT:
+        return deleteResult(state,action);
+
+        default:
+            return state;
     }
-    export default reducer;
+
+
+
+}
+export default reducer;
 
 //Read the article after it
 //Unfortunately, the process of correctly applying immutable updates to deeply nested state can
@@ -65,7 +71,7 @@ const initialState={
 //             // This isn't the item we care about - keep it as-is
 //             return item;
 //         }
- 
+
 //         // Otherwise, this is the one we want - return an updated value
 //         return {
 //             ...item,
