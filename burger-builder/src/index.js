@@ -5,13 +5,22 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+import {createStore,applyMiddleware,compose,combineReducers} from 'redux';
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
+import orderReducer from './store/reducers/order';
+import thunk from 'redux-thunk';
 
 // We have to wrap the provider outside of brwserRouter and
 // passing store through it will connect the store to our application.
-const store=createStore(burgerBuilderReducer , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); 
-// We will use the basic dev tools extension because  we are not using any middleware here
+const rootReducer=combineReducers({
+  burgerBuilder:burgerBuilderReducer,
+  order:orderReducer
+
+});
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store=createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)) );
+// We will use the basic dev tools extension because  we are not using any middleware her});
 const app=(
   <Provider store={store}>/
   <BrowserRouter>

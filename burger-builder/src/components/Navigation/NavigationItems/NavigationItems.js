@@ -6,6 +6,8 @@ const navigationItems=(props)=>(
     <NavigationItem link="/" exact active> Burger Builder</NavigationItem>
     {/* //We are passing excat here as a prop so that it wont get applied to every link */}
     <NavigationItem link="/orders">Orders</NavigationItem>
+    <NavigationItem link="/auth">Authenticate</NavigationItem>
+
     </ul>
 
 )
