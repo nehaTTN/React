@@ -1,6 +1,11 @@
 //This is the central file where all the exports will be managed
 export {
     addIngredient,
-    removeIngredient
+    removeIngredient,
+    initIngredients
 } from './burgerBuilder.js';
-export { } from './order.js'; 
+export {
+    purchaseBurger,
+    purchaseInit,
+    fetchOrders
+ } from './order.js'; 
