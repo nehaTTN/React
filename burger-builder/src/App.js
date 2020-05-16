@@ -8,6 +8,7 @@ import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import { connect } from 'react-redux';
 import * as actionTypes from './store/actions/index';
+//We have to apply lazy loading
 class App extends Component {
   componentDidMount() {
     this.props.onTryAutoSignup();
