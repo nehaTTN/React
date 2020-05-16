@@ -8,13 +8,15 @@ import {Provider} from 'react-redux';
 import {createStore,applyMiddleware,compose,combineReducers} from 'redux';
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 import thunk from 'redux-thunk';
 
 // We have to wrap the provider outside of brwserRouter and
 // passing store through it will connect the store to our application.
 const rootReducer=combineReducers({
   burgerBuilder:burgerBuilderReducer,
-  order:orderReducer
+  order:orderReducer,
+  auth:authReducer
 
 });
 

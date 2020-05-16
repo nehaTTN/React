@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionsTypes';
-import updatedObject from '../utility';
-import { act } from '@testing-library/react';
+import {updatedObject} from '../../shared/utility';
+
 const initialState = {
     orders: [],
     loading: false,

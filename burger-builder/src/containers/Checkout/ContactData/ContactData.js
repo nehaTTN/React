@@ -4,9 +4,10 @@ import styles from './ContactData.module.css';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import withErrorHandler from '../../../hoc/WithErrorHandler/WithErrorHandler';
 import * as actionCreators from '../../../store/actions/index';
+import {updatedObject,checkValid} from '../../../shared/utility';
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -97,25 +98,7 @@ class ContactData extends Component {
         formIsValid: false
         // loading: false
     }
-    checkValid(value, rules) {
-        let isValid = true;//Setting it initially to true so that when condition is 
-        //Checked in if statement then it should not be overridded by the other ifs.
-        // if (!rules) {
-        //     return true;  //If there is no validation like in drop down
-        // }
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid//Checking if the string enterd is not blank spaces
-        }
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-        if (rules.maxLength) {
-            isValid = value.length <= rules.minLength && isValid
-        }
-
-        return isValid;
-    }
-
+    
 
     orderHandler = (event) => {
         event.preventDefault();//Because I dont want to send request automatically.That would reload my page.
@@ -127,10 +110,11 @@ class ContactData extends Component {
         const order = {//Preparing the data to pass to the server 
             ingredients: this.props.ingred,
             price: this.props.price,
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
 
         }
-        this.props.onOrderBurger(order);
+        this.props.onOrderBurger(order, this.props.token);
         // axios.post('/orders.json', order)
         //     .then(response => {
         //         this.setState({ loading: true });
@@ -145,17 +129,27 @@ class ContactData extends Component {
     inputChangeHandler = (event, inputIdentifier) => {
         //We are using an inputidentifier so that we can set the values 
         //to the correct inputIdentifier.
-        //we have to always use setState this way    
-        const updateForm = {
-            ...this.state.orderForm//Here it wiil only be ashallow copy and because we have to go inside 
-            //it as well I will make a copy of it again.
-        };
-        const updateFormElement = {
-            ...updateForm[inputIdentifier]
-        };
-        updateFormElement.value = event.target.value;
-        updateFormElement.valid = this.checkValid(updateFormElement.value, updateFormElement.validation);
-        updateFormElement.touched = true;//To highlight the form fields only if the user touvhed the field otherwise not.
+        //we have to always use setState this way   
+        //We can do it this way also 
+        // const updateForm = {
+        //     ...this.state.orderForm//Here it wiil only be ashallow copy and because we have to go inside 
+        //     //it as well I will make a copy of it again.
+        // };
+        // const updateFormElement = {
+        //     ...updateForm[inputIdentifier]
+        // };
+        // updateFormElement.value = event.target.value;
+        // updateFormElement.valid = this.checkValid(updateFormElement.value, updateFormElement.validation);
+        // updateFormElement.touched = true;//To highlight the form fields only if the user touvhed the field otherwise not.
+        // updateForm[inputIdentifier] = updateFormElement;
+        const updateFormElement = updatedObject(this.state.orderForm[inputIdentifier], {
+            value : event.target.value,
+            valid : checkValid(event.target.value, this.state.orderForm[inputIdentifier].validation),
+            touched : true//To highlight the form fields only if the user touvhed the field otherwise not.  
+        })
+        const updateForm = updatedObject(this.state.orderForm, {
+            [inputIdentifier]: updateFormElement
+        })
         updateForm[inputIdentifier] = updateFormElement;
         let formIsValid = true;
         for (let key in updateForm) {
@@ -205,18 +199,20 @@ class ContactData extends Component {
     }
 
 }
-const mapStateToProps = state => { 
-    return{//Because now we have a root reducer
-    ingred:state.burgerBuilder.ingredients,
-    price:state.burgerBuilder.totalPrice,
-    loading:state.order.loading
+const mapStateToProps = state => {
+    return {//Because now we have a root reducer
+        ingred: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 }
 const mapDispatchToProps = dispatch => {
-    return{
-        onOrderBurger:(orderData)=>dispatch(actionCreators.purchaseBurger(orderData))
+    return {
+        onOrderBurger: (orderData, token) => dispatch(actionCreators.purchaseBurger(orderData, token))
     };
-  
+
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(ContactData,axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

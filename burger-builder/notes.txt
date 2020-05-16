@@ -8,3 +8,21 @@ how it works:
 2.Then follwed by that it will go to the reducer
 3.Reducer will then update the value
 4.we will get the updated value back in the component by the help of subscriber i.e. mapStateToProps
+
+AUTHENTICATION:-
+For burgerBuilder we will grant the the access to everyone
+for orders we will grant it to only authenticated users.
+we can do so by goinf to the firebase and setting up the rules like this.
+{
+  "rules": {
+    "ingredients":{
+      ".read": true,
+    ".write": true
+    },
+      "orders":{
+        ".read":"auth!=null",
+          ".write":"auth!=null"
+      }
+    
+  }
+}

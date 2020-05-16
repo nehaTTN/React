@@ -1,12 +1,13 @@
 import * as actionTypes from '../actions/actionsTypes';
-import updatedObject from '../utility';
-import { act } from '@testing-library/react';
+import {updatedObject} from '../../shared/utility';
+
 const initialState = {
     ingredients: null,//Initially the ingredients will be 0 and whenever a
     //ingredient is incremented the value in the state eill increase by 1
 
     error: false,
-    totalPrice: 40
+    totalPrice: 40,
+    building:false 
 }
 
 const INGREDIENTS_PRICES = {
@@ -29,7 +30,8 @@ const addIngredient = (state, action) => {
     const updatedIngredients = updatedObject(state.ingredients, updatedIngredient)
     const updatedState = {
         ingredients: updatedIngredients,
-        totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.ingredientName],
+        building:true
 
     }
     return updatedObject(state, updatedState);
@@ -40,7 +42,9 @@ const removeIngredient = (state, action) => {
     const updatedIngs = updatedObject(state.ingredients, updatedIng)
     const updatedSt = {
         ingredients: updatedIngs,
-        totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.ingredientName],
+        building:true
+
 
     }
     return updatedObject(state, updatedSt);
@@ -56,7 +60,9 @@ const setIngredient = (state, action) => {
             meat: action.ingredients.meat,
         },
         totalPrice: 40,//So that the total price reload evertime
-        error: false//In case if the user had initially an error but later on resolved that
+        error: false,//In case if the user had initially an error but later on resolved that
+        building:false//We will set it to false because in set Ingredients we are starting from scratch
+        
     });
 
 
