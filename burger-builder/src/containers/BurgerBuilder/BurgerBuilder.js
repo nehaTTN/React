@@ -74,9 +74,19 @@ class BurgerBuilder extends Component {
     //     this.setState({ingredients:updatedIngredients,totalPrice:newPrice})
     //     this.isPurchasable(updatedIngredients);
     //     }   
-    purchaseHandler = () => (
-        this.setState({ purchasing: true })
-    )
+    purchaseHandler = () => {
+        
+        if(this.props.isAuthenticated)
+        {
+            this.setState({ purchasing: true })
+        }
+        else
+        {
+        this.props.onSetAuthRedirectPath('/checkout');
+        this.props.history.push('/auth');
+        }
+        
+    }
     purchaseCancelHandler = () => {
         this.setState({ purchasing: false })
     }
@@ -124,7 +134,7 @@ class BurgerBuilder extends Component {
                         disabled1={disableInfo}
                         price={this.props.price}
                         ordered={this.purchaseHandler}
-
+                        isAuth={this.props.isAuthenticated}//This will show the diff output for the the order button if the user in not authenticated
                         purchasable={this.isPurchasable(this.props.ingred)} />
                 </Aux>
             );
@@ -151,16 +161,18 @@ const mapStateToProps = state => {//This will be used to fetch values from the g
     return {
         ingred: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        error:state.burgerBuilder.error
+        error:state.burgerBuilder.error,
+        isAuthenticated: state.auth.token!==null
     };
 }
 const mapDispatchToProps = dispatch => {//This will be used to update the value to global state
-    console.log(' mapDispatchToProps')
+
     return {
         addIngredient: (ingredName) => dispatch(actionCreators.addIngredient(ingredName)),
         removeIngredient: (ingredName) => dispatch(actionCreators.removeIngredient(ingredName)),
         initIngredients: () => dispatch(actionCreators.initIngredients()),
-        purchaseInit:()=>dispatch(actionCreators.purchaseInit())
+        purchaseInit:()=>dispatch(actionCreators.purchaseInit()),
+        onSetAuthRedirectPath:(path)=>dispatch(actionCreators.setAuthRedirectPath(path))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

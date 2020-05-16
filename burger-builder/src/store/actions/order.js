@@ -26,11 +26,11 @@ export const purchaseInit = () => {
     };
 }
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData,token) => {
 
     return dispatch => {
         dispatch(purchaseBurgerStart())
-        axios.post('/orders.json', orderData)
+        axios.post('/orders.json?auth='+token, orderData)
             .then(response => {
                 console.log(response.data);
                 dispatch(purchaseBurgerSuccess(response.data.name, orderData))//We havvr transferred orderData so that we can store it in our local store
@@ -57,12 +57,14 @@ export const fetchOrdersSuccess = (orders) => {
         orders: orders
     };
 }
-export const fetchOrders = () => {
+export const fetchOrders = (token,userId) => {
     return dispatch => {
         //Here the data received will not be in array form.
         //So we have to convert it in array
         dispatch(fetchOrdersStart())
-        axios.get('/orders.json')
+        //For this we have to make changes in the firebase rules also to ake it searchable
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('/orders.json?auth='+queryParams)//Here the values will be displayed to only authenticated users so we are appending it.
             .then(response => {
                 let fetchedData = [];
                 for (let key in response.data) {

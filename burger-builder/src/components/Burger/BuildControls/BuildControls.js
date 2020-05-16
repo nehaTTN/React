@@ -9,7 +9,6 @@ const controls=[
     {label:'Salad',type:'salad'}
 ];
 const buildControls=(props)=>{
-    console.log('purchasable',props.purchasable);
     return(
         <div className={styles.BuildControls}>
         
@@ -25,7 +24,7 @@ const buildControls=(props)=>{
         
         <button className={styles.OrderButton} 
         disabled={!props.purchasable}
-        onClick={props.ordered}>ORDER NOW</button>
+        onClick={props.ordered}>{props.isAuth?'ORDER NOW':'SIGN UP TO ORDER'}</button>
     </div>
     );
     
